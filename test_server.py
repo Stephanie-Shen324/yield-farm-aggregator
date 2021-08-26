@@ -2,7 +2,8 @@ import pymongo
 import dns
 import pprint
 
-client = pymongo.MongoClient("mongodb+srv://admin:admin@yieldfarmingdata.cclc0.mongodb.net/YieldFarmingData"
+# UPDATE <password> TO MONGODB USER PASSWORD
+client = pymongo.MongoClient("mongodb+srv://admin:<password>@yieldfarmingdata.cclc0.mongodb.net/YieldFarmingData"
                              "?retryWrites=true&w=majority")
 
 

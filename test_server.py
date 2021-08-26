@@ -1,5 +1,4 @@
 import pymongo
-import dns
 import pprint
 
 # UPDATE <password> TO MONGODB USER PASSWORD

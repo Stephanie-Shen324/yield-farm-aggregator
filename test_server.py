@@ -20,7 +20,7 @@ def main():
     print()
     print("rated protocols: ")
     for doc in col.find():
-        print(doc['protocolName'])
+        print("{}: {}".format(doc['protocolName'], doc['rating']))
 
     return
 

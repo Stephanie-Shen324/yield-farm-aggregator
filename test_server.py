@@ -1,5 +1,27 @@
+import pymongo
+import dns
+import pprint
+
+client = pymongo.MongoClient("mongodb+srv://admin:admin@yieldfarmingdata.cclc0.mongodb.net/YieldFarmingData"
+                             "?retryWrites=true&w=majority")
+
+
 def main():
-    print("Working")
+    print("client databases: ")
+    for db in client.list_database_names():
+        pprint.pprint(db)
+    db = client.pool_db
+    print()
+    print("collections: ")
+    for col in db.list_collection_names():
+        pprint.pprint(col)
+    col = db.safety_ratings
+
+    print()
+    print("rated protocols: ")
+    for doc in col.find():
+        print(doc['protocolName'])
+
     return
 
 

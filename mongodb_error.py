@@ -1,0 +1,3 @@
+
+class MongoDBException(Exception):
+    pass

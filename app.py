@@ -12,6 +12,7 @@ def main():
     while True:
         try:
             # 300 seconds = 5 minutes
+            print(300 - time() % 300)
             sleep(300 - time() % 300)
             # do work
             '''

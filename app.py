@@ -24,7 +24,7 @@ def main():
                     response = db_client.insert_pool(pool)
                     if response != 0:
                         raise MongoDBException(
-                            "Error pushing data: pool: {} () could not be updated or inserted".format(
+                            "Error pushing data: pool: {} ({}) could not be updated or inserted".format(
                                 pool.get_protocol(), pool.get_assets()))
             attempts = 0
             break

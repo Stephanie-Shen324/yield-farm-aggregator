@@ -65,7 +65,7 @@ while x < size:
     tvl = str(row["Value Locked"]).strip()
     tvl = float(tvl[1:].replace(',', ''))
     apy = float(row["Returns"])
-    tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl)
+    tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, 0)
     print(tmp_pool.to_dict())
     x += 1
 

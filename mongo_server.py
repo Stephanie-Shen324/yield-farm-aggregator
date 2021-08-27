@@ -20,10 +20,10 @@ class MongoServer(pymongo.MongoClient):
 
         try:
             col.insert_one(pool_dict)
-            self.__log_file.write("{}: {} is now added.".format(datetime.now(), pool_dict["pool"]))
+            self.__log_file.write("{}: {} is now added.\n".format(datetime.now(), pool_dict["pool"]))
         except Exception as e:
             self.__log_file.write(
-                "{}: {} could not be added. This could be because it already exists.".format(datetime.now(),
+                "{}: {} could not be added. This could be because it already exists.\n".format(datetime.now(),
                                                                                              pool_dict["pool"]))
             return -1
         return 0
@@ -37,15 +37,15 @@ class MongoServer(pymongo.MongoClient):
 
         if doc_to_update is None:
             self.__log_file.write(
-                "{}: {} does not exist. Try insert using insert_pools function.".format(datetime.now(),
+                "{}: {} does not exist. Try insert using insert_pools function.\n".format(datetime.now(),
                                                                                         pool_dict["pool"]))
             return 1
         else:
             col.update_one(doc_to_update, {"$set": pool.to_dict()})
-            self.__log_file.write("{}: {} is successfully updated.".format(datetime.now(),
+            self.__log_file.write("{}: {} is successfully updated.\n".format(datetime.now(),
                                                                            pool_dict["pool"]))
             return 0
 
     def write_log(self, text: str):
-        self.__log_file.write(text)
+        self.__log_file.write(text + "\n")
 

@@ -26,7 +26,6 @@ def scrape_data() -> [Pool]:
 
     pools = []
     size = df.shape[0]
-    print(size)
     x = 0
     while x < size:
         row = df.iloc[x]

@@ -56,7 +56,7 @@ df.rename(columns={'Returns(Estimated)': 'Returns'}, inplace=True)
 size = df.shape[0]
 x = 0
 while x < size:
-    protocol = df["Asset"].strip().split(" ")
+    protocol = str(df["Asset"]).strip().split(" ")
     assets = []
     for asset in df["Collateral"].strip().split(" "):
         assets.append(asset)

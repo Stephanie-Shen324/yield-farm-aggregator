@@ -57,8 +57,9 @@ size = df.shape[0]
 print(size)
 x = 0
 while x < size:
-    # protocol = str(df["Asset"]).strip().split()
-    print(df.iloc[x])
+    row = df.iloc[x]
+    protocol = str(row["Asset"]).strip().split()
+    print(protocol)
     # assets = []
     # for asset in str(df["Collateral"]).strip().split(" "):
     #     assets.append(asset)

@@ -28,7 +28,6 @@ def main():
                             "Error pushing data: pool: {} ({}) could not be updated or inserted".format(
                                 pool.get_protocol(), pool.get_assets()))
             attempts = 0
-            break
         except Exception as e:
             attempts += 1
             # send notification to admin with error

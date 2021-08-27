@@ -24,7 +24,7 @@ class MongoServer(pymongo.MongoClient):
         except Exception as e:
             self.__log_file.write(
                 "{}: {} could not be added. This could be because it already exists.\n".format(datetime.now(),
-                                                                                             pool_dict["pool"]))
+                                                                                               pool_dict["pool"]))
             return -1
         return 0
 
@@ -38,28 +38,22 @@ class MongoServer(pymongo.MongoClient):
         if doc_to_update is None:
             self.__log_file.write(
                 "{}: {} does not exist. Try insert using insert_pools function.\n".format(datetime.now(),
-                                                                                        pool_dict["pool"]))
+                                                                                          pool_dict["pool"]))
             return 1
         else:
             col.update_one(doc_to_update, {"$set": pool.to_dict()})
             self.__log_file.write("{}: {} is successfully updated.\n".format(datetime.now(),
-                                                                           pool_dict["pool"]))
+                                                                             pool_dict["pool"]))
             return 0
 
     def get_pools(self) -> [Pool]:
         collection = self.pool_db.pools_test
         pools = []
         for doc in collection.find():
-            tmp_pool = Pool(doc["assets"], doc["protocol"], doc["scAddress"], doc["link"], doc["safety"], doc["apy"], doc["tvl"], doc["il"])
+            tmp_pool = Pool(doc["assets"], doc["protocol"], doc["scAddress"], doc["link"], doc["safety"], doc["apy"],
+                            doc["tvl"], doc["il"])
             pools.append(tmp_pool)
         return pools
 
-
-
     def write_log(self, text: str):
         self.__log_file.write(text + "\n")
-
-
-ms = MongoServer()
-for pool in ms.get_pools():
-    print(pool.get_protocol(), pool.get_assets())

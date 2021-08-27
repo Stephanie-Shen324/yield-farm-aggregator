@@ -41,6 +41,8 @@ class MongoServer(pymongo.MongoClient):
                                                                                           pool_dict["pool"]))
             return 1
         else:
+            pool.set_safety(doc_to_update["safety"])
+            pool.set_link(doc_to_update["link"])
             col.update_one(doc_to_update, {"$set": pool.to_dict()})
             self.__log_file.write("{}: {} is successfully updated.\n".format(datetime.now(),
                                                                              pool_dict["pool"]))

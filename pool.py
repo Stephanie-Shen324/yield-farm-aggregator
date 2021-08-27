@@ -22,6 +22,7 @@ class Pool:
     def get_assets(self):
         return self.__assets
 
+
     def get_protocol(self):
         return self.__protocol
 
@@ -31,17 +32,32 @@ class Pool:
     def get_link(self):
         return self.__link
 
+    def set_link(self, link):
+        self.__link = link
+
     def get_safety(self):
         return self.__safety
+
+    def set_safety(self, safety):
+        self.__safety = safety
 
     def get_apy(self):
         return self.__apy
 
-    def get_trading_volume(self):
+    def set_apy(self, apy):
+        self.__apy = apy
+
+    def get_tvl(self):
         return self.__tvl
+
+    def set_tvl(self, tvl):
+        self.__tvl = tvl
 
     def get_impermanent_loss(self):
         return self.__impermanent_loss
+
+    def set_impermanent_loss(self, il):
+        self.__impermanent_loss = il
 
     def to_dict(self):
         pool_dict = {'assets': self.__assets, 'protocol': self.__protocol, 'scAddress': self.__sc_address,

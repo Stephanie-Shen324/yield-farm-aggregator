@@ -59,10 +59,10 @@ x = 0
 while x < size:
     row = df.iloc[x]
     protocol = str(row["Asset"]).strip().split("(")[0].strip()
-    print(protocol)
-    # assets = []
-    # for asset in str(df["Collateral"]).strip().split(" "):
-    #     assets.append(asset)
+    assets = []
+    for asset in str(row["Collateral"]).strip().split(" "):
+        assets.append(asset)
+    print(assets)
     # tvl = str(df["Value Locked"]).strip()
     # tvl = float(tvl[1:].replace(',', ''))
     # apy = float(df["Returns"])

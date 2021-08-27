@@ -46,6 +46,19 @@ class MongoServer(pymongo.MongoClient):
                                                                            pool_dict["pool"]))
             return 0
 
+    def get_pools(self) -> [Pool]:
+        collection = self.pool_db.pools_test
+        pools = []
+        for doc in collection.find():
+            tmp_pool = Pool(doc["assets"], doc["protocol"], doc["scAddress"], doc["link"], doc["safety"], doc["apy"], doc["tvl"], doc["il"])
+            pools.append(tmp_pool)
+        return pools
+
+
+
     def write_log(self, text: str):
         self.__log_file.write(text + "\n")
 
+
+ms = MongoServer()
+print(ms.get_pools())

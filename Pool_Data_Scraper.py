@@ -53,6 +53,18 @@ df.rename(columns={'Returns(Estimated)': 'Returns'}, inplace=True)
 #
 #         return pool_dict
 
-for row in df:
-    print(df[row])
+size = df.shape[0]
+x = 0
+while x < size:
+    protocol = df["Asset"].strip().split(" ")
+    assets = []
+    for asset in df["Collateral"].strip().split(" "):
+        assets.append(asset)
+    tvl = df["Value Locked"]
+    tvl = float(tvl[1:].replace(',', ''))
+    apy = float(df["Returns"])
+    tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl)
+    print(tmp_pool.to_dict())
+    x += 1
+
 

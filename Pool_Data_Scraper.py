@@ -56,15 +56,16 @@ df.rename(columns={'Returns(Estimated)': 'Returns'}, inplace=True)
 size = df.shape[0]
 x = 0
 while x < size:
-    protocol = str(df["Asset"]).strip().split(" ")
-    assets = []
-    for asset in str(df["Collateral"]).strip().split(" "):
-        assets.append(asset)
-    tvl = str(df["Value Locked"]).strip()
-    tvl = float(tvl[1:].replace(',', ''))
-    apy = float(df["Returns"])
-    tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl)
-    print(tmp_pool.to_dict())
+    protocol = str(df["Asset"]).strip().split(" ")[0]
+    print(protocol)
+    # assets = []
+    # for asset in str(df["Collateral"]).strip().split(" "):
+    #     assets.append(asset)
+    # tvl = str(df["Value Locked"]).strip()
+    # tvl = float(tvl[1:].replace(',', ''))
+    # apy = float(df["Returns"])
+    # tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl)
+    # print(tmp_pool.to_dict())
     x += 1
 
 

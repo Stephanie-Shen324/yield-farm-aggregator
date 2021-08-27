@@ -53,5 +53,6 @@ df.rename(columns={'Returns(Estimated)': 'Returns'}, inplace=True)
 #
 #         return pool_dict
 
-print(df)
+for row in df:
+    print(row['Asset'])
 

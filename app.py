@@ -12,8 +12,8 @@ def main():
     while True:
         try:
             # 300 seconds = 5 minutes
-            # print(300 - time() % 300)
-            # sleep(300 - time() % 300)
+            print(300 - time() % 300)
+            sleep(300 - time() % 300)
             # do work
             '''
             call function to scrape data from coin gecko and other site to then push to DB

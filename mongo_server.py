@@ -61,4 +61,5 @@ class MongoServer(pymongo.MongoClient):
 
 
 ms = MongoServer()
-print(ms.get_pools())
+for pool in ms.get_pools():
+    print(pool.get_protocol(), pool.get_assets())

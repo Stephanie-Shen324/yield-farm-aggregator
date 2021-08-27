@@ -13,8 +13,6 @@ URL = 'https://docs.google.com/spreadsheets/d/{0}/gviz/tq?tqx=out:csv&sheet={1}'
     worksheetName
 )
 df = pd.read_csv(URL)
-print(df)
-quit()
 
 # Data cleaning
 df.drop(['#', 'Audits', 'Pool', 'IL Risk', 'Unnamed: 8', 'Unnamed: 9', 'Unnamed: 10', 'URL',

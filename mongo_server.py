@@ -11,7 +11,7 @@ class MongoServer(pymongo.MongoClient):
         self.__log_file = open("db.log", "a")
 
     def insert_pool(self, pool: Pool) -> int:
-        col = self.pool_db.pools
+        col = self.pool_db.pools_test
         pool_dict = pool.to_dict()
 
         # add a new attribute called "pool"
@@ -29,7 +29,7 @@ class MongoServer(pymongo.MongoClient):
         return 0
 
     def update_pool(self, pool: Pool) -> int:
-        col = self.pool_db.pools
+        col = self.pool_db.pools_test
         # search db for this document
         pool_dict = pool.to_dict()
         pool_dict["pool"] = pool_dict["protocol"] + ' ' + '/'.join(sorted(pool_dict["assets"]))

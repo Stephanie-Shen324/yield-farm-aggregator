@@ -58,9 +58,9 @@ x = 0
 while x < size:
     protocol = str(df["Asset"]).strip().split(" ")
     assets = []
-    for asset in df["Collateral"].strip().split(" "):
+    for asset in str(df["Collateral"]).strip().split(" "):
         assets.append(asset)
-    tvl = df["Value Locked"]
+    tvl = str(df["Value Locked"])
     tvl = float(tvl[1:].replace(',', ''))
     apy = float(df["Returns"])
     tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl)

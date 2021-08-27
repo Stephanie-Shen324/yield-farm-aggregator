@@ -53,7 +53,7 @@ df.rename(columns={'Returns(Estimated)': 'Returns'}, inplace=True)
 #
 #         return pool_dict
 
-size = df.shape
+size = df.shape[0]
 print(size)
 x = 0
 while x < size:

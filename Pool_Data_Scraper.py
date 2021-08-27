@@ -64,10 +64,9 @@ while x < size:
         assets.append(asset)
     tvl = str(row["Value Locked"]).strip()
     tvl = float(tvl[1:].replace(',', ''))
-    print(tvl)
-    # apy = float(df["Returns"])
-    # tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl)
-    # print(tmp_pool.to_dict())
+    apy = float(row["Returns"])
+    tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl)
+    print(tmp_pool.to_dict())
     x += 1
 
 

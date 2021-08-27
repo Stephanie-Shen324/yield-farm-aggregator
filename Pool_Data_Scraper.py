@@ -58,7 +58,7 @@ print(size)
 x = 0
 while x < size:
     # protocol = str(df["Asset"]).strip().split()
-    print(df[x:])
+    print(df[x])
     # assets = []
     # for asset in str(df["Collateral"]).strip().split(" "):
     #     assets.append(asset)

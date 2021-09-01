@@ -19,6 +19,7 @@ def main():
             call function to scrape data from coin gecko and other site to then push to DB
             '''
             pools = scrape_data()
+            print("{} number of pools with data to update".format(len(pools)))
             for pool in pools:
                 response = db_client.update_pool(pool)
                 if response != 0:

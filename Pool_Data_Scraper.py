@@ -18,7 +18,7 @@ def scrape_data() -> [Pool]:
     df = pd.read_csv(URL)
 
     # Data cleaning
-    df.drop(['#', 'Audits', 'Pool', 'IL Risk', 'Unnamed: 8', 'Unnamed: 9', 'Unnamed: 10', 'URL',
+    df.drop(['#', 'Audits', 'Pool','IL Risk', 'Unnamed: 8', 'Unnamed: 9', 'Unnamed: 10', 'URL',
              'https://www.coingecko.com/en/yield-farming'], axis=1, inplace=True, errors='ignore')
     df = df.dropna()
     df['Returns(Estimated)'] = df['Returns(Estimated)'].str.split('%').str[0]
@@ -45,10 +45,27 @@ def scrape_data() -> [Pool]:
             IL risk = Medium
         Otherwise:
             IL risk = high
-
         '''
-
-        tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, 0)
+        stable_coins = ['1GOLD', 'ALCX', 'ALUSD', 'BUSD', 'BITCHY', 'BITUSD', 'BITGOLD', 'BITEUR', 'BVND', 'BGBP',
+                        'CUSD', 'CONST', 'CEUR', 'DAI', 'DGD', 'DGX', 'DPT', 'EURS', 'EURT', 'EOSDT', 'EBASE', 
+                        'FEI', 'FRAX', 'FLUSD', 'GUSD', 'HGT', 'HUSD', 'ITL', 'IDRT', 'KBC', 'LUSD', 'MUSD', 'MTR', 
+                        'MDO', 'MDS', 'OUSD', 'PAX', 'PAR', 'QC', 'RSR', 'RSV', 'SUSD', 'SBD', 'TUSD', 'TRYB', 'TRIBE',
+                        'UEYH', 'USDT', 'USDX', 'UST', 'USDC', 'USDS', 'USDN', 'USDK', 'USDH', 'USNBT', 'USDB', 'USDQ',
+                        'USDP', 'USDL', 'USDFL', 'USDEX', 'UETH', 'VAI', 'XSGD', 'XCHF', 'XEUR', 'XAUR', 'ZUSD']
+        IL_flag = 'UNASSIGNED'
+        if len(assets) == 1:
+          IL_flag= 'None'
+        else:
+          for asset in assets:
+            if asset in stable_coins:
+              IL_flag = 'Medium'
+              break
+          if IL_flag == 'UNASSIGNED':
+            IL_flag = 'High'
+        print(assets, IL_flag)
+        tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, IL_flag)
         pools.append(tmp_pool)
         x += 1
     return pools
+
+print(scrape_data())

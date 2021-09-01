@@ -36,6 +36,18 @@ def scrape_data() -> [Pool]:
         tvl = str(row["Value Locked"]).strip()
         tvl = float(tvl[1:].replace(',', ''))
         apy = float(row["Returns"])
+
+        # add basic IL functionality
+        '''
+        If no. of assets == 1:
+            IL risk = None
+        Else if any of the assets are a stablecoin:
+            IL risk = Medium
+        Otherwise:
+            IL risk = high
+
+        '''
+
         tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, 0)
         pools.append(tmp_pool)
         x += 1

@@ -42,7 +42,7 @@ class MongoServer(pymongo.MongoClient):
             return 1
         else:
             if float(pool.get_tvl()) == float(doc_to_update["tvl"]) and float(pool.get_apy()) == float(
-                    doc_to_update["apy"]) and float(pool.get_impermanent_loss()) == float(doc_to_update["il"]):
+                    doc_to_update["apy"]) and pool.get_impermanent_loss() == doc_to_update["il"]:
 
                 self.__log_file.write("{}: No updates for {}\n".format(datetime.now(), pool_dict["pool"]))
 

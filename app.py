@@ -11,9 +11,9 @@ def main():
     attempts = 0
     while True:
         try:
-            # 300 seconds = 5 minutes
-            print(300 - time() % 300)
-            sleep(300 - time() % 300)
+            wait_time = 60
+            print(wait_time - time() % wait_time)
+            sleep(wait_time - time() % wait_time)
             # do work
             '''
             call function to scrape data from coin gecko and other site to then push to DB

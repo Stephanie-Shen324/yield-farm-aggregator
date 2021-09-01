@@ -6,10 +6,10 @@ class Pool:
     __safety = 0.0
     __apy = 0.0
     __tvl = 0.0
-    __impermanent_loss = 0.0
+    __impermanent_loss = None
 
     def __init__(self, assets: [str], protocol: str, sc_address: str, link: str, safety: float, apy: float, tvl: float,
-                 il: float):
+                 il):
         self.__assets = assets
         self.__protocol = protocol
         self.__sc_address = sc_address

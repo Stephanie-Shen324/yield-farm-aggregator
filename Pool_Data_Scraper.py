@@ -68,4 +68,4 @@ def scrape_data() -> [Pool]:
         x += 1
     return pools
 
-print(scrape_data())
+# print(scrape_data())

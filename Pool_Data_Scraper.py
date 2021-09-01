@@ -41,6 +41,8 @@ def scrape_data() -> [Pool]:
         '''
         If no. of assets == 1:
             IL risk = None
+        Else if all of the assets are stablecoin:
+            IL risk = None
         Else if any of the assets are a stablecoin:
             IL risk = Medium
         Otherwise:
@@ -53,16 +55,21 @@ def scrape_data() -> [Pool]:
                         'UEYH', 'USDT', 'USDX', 'UST', 'USDC', 'USDS', 'USDN', 'USDK', 'USDH', 'USNBT', 'USDB', 'USDQ',
                         'USDP', 'USDL', 'USDFL', 'USDEX', 'UETH', 'VAI', 'XSGD', 'XCHF', 'XEUR', 'XAUR', 'ZUSD']
         IL_flag = 'UNASSIGNED'
+        num_stablecoins = 0
+        
+        for asset in assets:
+          if asset in stable_coins:
+            num_stablecoins += 1
+
         if len(assets) == 1:
-          IL_flag= 'None'
-        else:
-          for asset in assets:
-            if asset in stable_coins:
-              IL_flag = 'Medium'
-              break
-          if IL_flag == 'UNASSIGNED':
+            IL_flag = 'None'
+        elif num_stablecoins == len(assets):
+            IL_flag = 'None'
+        elif num_stablecoins >= 1:
+            IL_flag = 'Medium'
+        else: # Asset number bigger than 1, no assets are stablecoins
             IL_flag = 'High'
-        print(assets, IL_flag)
+        # print(assets, IL_flag)
         tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, IL_flag)
         pools.append(tmp_pool)
         x += 1

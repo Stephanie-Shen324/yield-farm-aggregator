@@ -64,7 +64,7 @@ def scrape_data() -> [Pool]:
         if len(assets) == 1:
             IL_flag = 'None'
         elif num_stablecoins == len(assets):
-            IL_flag = 'None'
+            IL_flag = 'Low'
         elif num_stablecoins >= 1:
             IL_flag = 'Medium'
         else: # Asset number bigger than 1, no assets are stablecoins

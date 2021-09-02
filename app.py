@@ -7,7 +7,6 @@ from mongodb_error import MongoDBException
 
 def main():
     db_client = MongoServer()
-    # loop constantly and call data scraper every 5 mins
     attempts = 0
     while True:
         try:

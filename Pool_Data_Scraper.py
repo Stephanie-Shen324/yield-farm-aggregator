@@ -240,7 +240,3 @@ def get_erc20_decimal(token_contract_address: str):
     contract = w3.eth.contract(Web3.toChecksumAddress(token_contract_address), abi=ABI)
     decimal = contract.functions.decimals().call()
     return decimal
-
-scrape_sushi_pools()
-
-print(eth_to_usd(1))

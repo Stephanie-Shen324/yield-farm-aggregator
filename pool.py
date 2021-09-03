@@ -6,10 +6,12 @@ class Pool:
     __safety = 0.0
     __apy = 0.0
     __tvl = 0.0
+    __hr_trading_vol = 0.0
+    __daily_trading_vol = 0.0
     __impermanent_loss = None
 
     def __init__(self, assets: [str], protocol: str, sc_address: str, link: str, safety: float, apy: float, tvl: float,
-                 il):
+                 il, hr_vol, daily_vol):
         self.__assets = assets
         self.__protocol = protocol
         self.__sc_address = sc_address
@@ -18,6 +20,8 @@ class Pool:
         self.__apy = apy
         self.__tvl = tvl
         self.__impermanent_loss = il
+        self.__hr_trading_vol = hr_vol
+        self.__daily_trading_vol = daily_vol
 
     def get_assets(self):
         return self.__assets
@@ -62,6 +66,6 @@ class Pool:
     def to_dict(self):
         pool_dict = {'assets': self.__assets, 'protocol': self.__protocol, 'scAddress': self.__sc_address,
                      'link': self.__link, 'safety': self.__safety, 'apy': self.__apy, 'tvl': self.__tvl,
-                     'il': self.__impermanent_loss}
+                     'il': self.__impermanent_loss, 'hrVol': self.__hr_trading_vol, 'dailyVol': self.__daily_trading_vol}
 
         return pool_dict

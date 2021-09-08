@@ -67,7 +67,7 @@ def scrape_data() -> [Pool]:
         else:  # Asset number bigger than 1, no assets are stablecoins
             IL_flag = 'High'
         # print(assets, IL_flag)
-        tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, IL_flag)
+        tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, IL_flag, 0, 0, 0, 0)
         pools.append(tmp_pool)
         x += 1
     return pools

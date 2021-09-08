@@ -9,9 +9,11 @@ class Pool:
     __hr_trading_vol = 0.0
     __daily_trading_vol = 0.0
     __impermanent_loss = None
+    __hrly_yield = 0.0
+    __daily_yeild = 0.0
 
     def __init__(self, assets: [str], protocol: str, sc_address: str, link: str, safety: float, apy: float, tvl: float,
-                 il, hr_vol, daily_vol):
+                 il, hr_vol, daily_vol, h_yield, d_yield):
         self.__assets = assets
         self.__protocol = protocol
         self.__sc_address = sc_address
@@ -22,6 +24,8 @@ class Pool:
         self.__impermanent_loss = il
         self.__hr_trading_vol = hr_vol
         self.__daily_trading_vol = daily_vol
+        self.__hrly_yield = h_yield
+        self.__daily_yeild = d_yield
 
     def get_assets(self):
         return self.__assets

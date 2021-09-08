@@ -32,6 +32,12 @@ data_log = open("data.log", "a")
 def scrape_sushi_pools() -> [Pool]:
     start = time.time()
     pools = []
+    json_string = ""
+    with open("balanceOf_ABI.json", "r") as json_abi:
+        for line in json_abi:
+            json_string = json_string + line
+    json_abi.close()
+    ABI = json.loads(json_string)
     for pool in sushi_pools:
         try:
             asset_list = pool.split("/")
@@ -39,27 +45,12 @@ def scrape_sushi_pools() -> [Pool]:
             token1 = get_erc20_contract_address(asset_list[1])
             if token0 is None or token1 is None:
                 continue
-            pool_contract_address = Web3.toChecksumAddress(sushi_pools[pool])
-            json_string = ""
-            with open("balanceOf_ABI.json", "r") as json_abi:
-                for line in json_abi:
-                    json_string = json_string + line
-            json_abi.close()
-            ABI = json.loads(json_string)
-            token0_contract = w3.eth.contract(Web3.toChecksumAddress(token0), abi=ABI)
-            token1_contract = w3.eth.contract(Web3.toChecksumAddress(token1), abi=ABI)
-            token0_raw_balance = token0_contract.functions.balanceOf(pool_contract_address).call()
-            token1_raw_balance = token1_contract.functions.balanceOf(pool_contract_address).call()
-            token0_decimal = get_erc20_decimal(token0)
-            token1_decimal = get_erc20_decimal(token1)
-            token0_balance = token0_raw_balance / 10 ** token0_decimal
-            token1_balance = token1_raw_balance / 10 ** token1_decimal
-            token0_value = eth_to_usd(get_price_in_eth(asset_list[0], token0_balance))
-            token1_value = eth_to_usd(get_price_in_eth(asset_list[1], token1_balance))
-            total_value_locked = token0_value + token1_value
+
+            total_value_locked = get_tvl(sushi_pools[pool])
             daily_trading_vol = get_pair_24h_volume(sushi_pools[pool])
             hrly_trading_vol = get_pair_hr_volume(sushi_pools[pool])
             daily_yield = calculate_yield(daily_trading_vol, total_value_locked)
+            hr_yeild = calculate_yield(hrly_trading_vol, total_value_locked)
 
             pool_tmp = Pool(asset_list,  # Assets
                             "Sushi",  # Protocol
@@ -70,7 +61,9 @@ def scrape_sushi_pools() -> [Pool]:
                             total_value_locked,  # TVL
                             None,  # Impermanent Loss TO BE IMPLEMENTED
                             hrly_trading_vol,  # Hourly trading volume
-                            daily_trading_vol  # Daily trading volume
+                            daily_trading_vol,  # Daily trading volume
+                            hr_yeild,  # Hourly APY
+                            daily_yield  # Daily APY
                             )
             pools.append(pool_tmp)
         except Exception as e:
@@ -91,8 +84,6 @@ def get_pair_24h_volume(pair_addr):
     pairDayData(
       id: "{}"
     ) {{
-      id
-      date
       dailyVolumeUSD
     }}
   }}
@@ -117,14 +108,6 @@ def get_pair_hr_volume(pair_addr):
        pairHourData (
         id: "{}"
       ) {{
-        pair {{
-          token0 {{
-            symbol
-          }}
-          token1 {{
-            symbol
-          }}
-        }}
         hourlyVolumeUSD
       }} 
     }}
@@ -132,5 +115,20 @@ def get_pair_hr_volume(pair_addr):
     response = sushi_client.execute(query)
     vol = response['pairHourData']['hourlyVolumeUSD']
     return float(vol)
+
+
+def get_tvl(pair_addr):
+    query = gql('''
+    query {{
+       pair (
+        id: "{}"
+      ) {{
+        reserveUSD
+      }} 
+    }}
+    '''.format(pair_addr))
+    response = sushi_client.execute(query)
+    tvl = response['pair']['reserveUSD']
+    return float(tvl)
 
 scrape_sushi_pools()

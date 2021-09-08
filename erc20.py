@@ -21,7 +21,7 @@ pools_file.close()
 w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/68e4933ac39740e48b29a222aeba109e'))
 
 # Initialise log file
-data_log = open("data.log", "a")
+data_log = open("erc20_data.log", "a")
 
 
 def get_erc20_decimal(token_contract_address: str):

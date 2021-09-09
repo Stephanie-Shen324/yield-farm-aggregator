@@ -1,3 +1,24 @@
 2021-09-03 16:24:23.028227: grabbing data for Sushi pools took 17.709408044815063 seconds
 2021-09-06 15:20:02.153419: grabbing data for Sushi pools took 9.181667804718018 seconds
 2021-09-06 15:27:52.930067: grabbing data for Sushi pools took 9.130150079727173 seconds
+2021-09-09 11:04:30.278199: grabbing data for Sushi pools took 0.0006821155548095703 seconds
+2021-09-09 11:08:37.623899: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:08:38.414137: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:08:39.143105: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:08:39.876703: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:08:40.590759: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:08:41.334185: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:08:41.334226: grabbing data for Sushi pools took 4.5210278034210205 seconds
+2021-09-09 11:09:39.269886: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:09:39.973062: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:09:40.699902: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:09:41.430796: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:09:42.147098: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:09:42.937239: Exception thrown: 'NoneType' object is not subscriptable
+2021-09-09 11:09:42.937276: grabbing data for Sushi pools took 4.457347869873047 seconds
+2021-09-09 11:11:13.682896: grabbing data for Sushi pools took 9.298324584960938e-05 seconds
+2021-09-09 11:12:18.830986: grabbing data for Sushi pools took 7.750312089920044 seconds
+2021-09-09 11:35:37.440535: grabbing data for Sushi pools took 8.015498876571655 seconds
+2021-09-09 11:51:12.547733: grabbing data for Sushi pools took 1.3012359142303467 seconds
+2021-09-09 11:51:33.545239: grabbing data for Sushi pools took 1.357079029083252 seconds
+2021-09-09 11:55:45.499089: grabbing data for Sushi pools took 7.602261066436768 seconds

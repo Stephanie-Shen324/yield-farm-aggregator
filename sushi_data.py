@@ -5,6 +5,8 @@ from gql.transport.requests import RequestsHTTPTransport
 from pool import Pool
 import time
 from datetime import datetime
+from mongo_server import MongoServer
+from farm_pool import FarmPool
 from erc20 import get_price_in_eth, get_erc20_decimal, get_erc20_contract_address, eth_to_usd
 
 # Initialise SushiSwap graphQL client
@@ -13,14 +15,12 @@ sample_transport = RequestsHTTPTransport(
     verify=True, retries=5, )
 sushi_client = Client(transport=sample_transport)
 
-# Initialise SushiSwap pool address info
-sushi_file = open("sushiswap.pools", "r")
-sushi_pools = {}
-for line in sushi_file:
-    split = line.split()
-    if len(split) != 2:
-        continue
-    sushi_pools[split[0]] = split[1].strip()
+# Query SushiSwap pool info
+mongo_client = MongoServer()
+col = mongo_client.pool_db.pools
+sushi_pools = []
+for p in col.find({"protocol": "Sushi"}):
+    sushi_pools.append(p)
 
 # Initialise Web3 client
 w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/68e4933ac39740e48b29a222aeba109e'))
@@ -29,43 +29,60 @@ w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/68e4933ac39740e48b29a2
 data_log = open("data.log", "a")
 
 
-def scrape_sushi_pools() -> [Pool]:
+def scrape_sushi_pools():
     start = time.time()
     pools = []
-    json_string = ""
-    with open("balanceOf_ABI.json", "r") as json_abi:
-        for line in json_abi:
-            json_string = json_string + line
-    json_abi.close()
-    ABI = json.loads(json_string)
+
     for pool in sushi_pools:
         try:
-            asset_list = pool.split("/")
+            hr = int(time.time() / 3600) - 1
+            day = int(time.time() / 86400) - 1
+            asset_list = pool["assets"]
             token0 = get_erc20_contract_address(asset_list[0])
             token1 = get_erc20_contract_address(asset_list[1])
             if token0 is None or token1 is None:
                 continue
 
-            total_value_locked = get_tvl(sushi_pools[pool])
-            daily_trading_vol = get_pair_24h_volume(sushi_pools[pool])
-            hrly_trading_vol = get_pair_hr_volume(sushi_pools[pool])
-            daily_yield = calculate_yield(daily_trading_vol, total_value_locked)
-            hr_yeild = calculate_yield(hrly_trading_vol, total_value_locked)
+            total_value_locked = get_tvl(pool["pool"])
+            if day not in pool["days"]:
+                # total_value_locked
+                pool["tvl"].append(total_value_locked)
+                if len(pool["tvl"]) > 30:
+                    pool["tvl"].pop(0)
+                # trading vol
+                daily_trading_vol = get_pair_24h_volume(pool["pool"])
+                pool["dailyTradingVol"].append(daily_trading_vol)
+                if len(pool["dailyTradingVol"]) > 30:
+                    pool["dailyTradingVol"].pop(0)
+                # daily yield
+                pool["DPY"].append(calculate_yield(daily_trading_vol, total_value_locked))
+                if len(pool["DPY"]) > 30:
+                    pool["DPY"].pop(0)
+            if hr not in pool["hours"]:
+                # trading vol
+                hrly_trading_vol = get_pair_hr_volume(pool["pool"])
+                pool["hrlyTradingVol"].append(hrly_trading_vol)
+                if len(pool["hrlyTradingVol"]) > 169:
+                    pool["hrlyTradingVol"].pop(0)
+                # hourly yield
+                pool["HPY"].append(calculate_yield(hrly_trading_vol, total_value_locked))
+                if len(pool["HPY"]) > 169:
+                    pool["HPY"].pop(0)
 
-            pool_tmp = Pool(asset_list,  # Assets
-                            "Sushi",  # Protocol
-                            sushi_pools[pool],  # Contract address
-                            "https://app.sushi.com/farm",  # Link to protocol
-                            None,  # Safety rating (already on db)
-                            daily_yield*365,  # APY
-                            total_value_locked,  # TVL
-                            None,  # Impermanent Loss TO BE IMPLEMENTED
-                            hrly_trading_vol,  # Hourly trading volume
-                            daily_trading_vol,  # Daily trading volume
-                            hr_yeild,  # Hourly APY
-                            daily_yield  # Daily APY
-                            )
-            pools.append(pool_tmp)
+            daily_avg = 0
+            for y in pool["DPY"]:
+                daily_avg += y
+            daily_avg = daily_avg/len(pool["DPY"])
+            apy = daily_avg*365
+
+            pool["APY"].append(apy)
+            if len(pool["APY"]) > 30:
+                pool["APY"].pop(0)
+
+            pool["days"].append(day)
+            pool["hours"].append(hr)
+
+            pools.append(pool)
         except Exception as e:
             data_log.write("{}: Exception thrown: {}\n".format(datetime.now(), e))
             continue
@@ -94,7 +111,7 @@ def get_pair_24h_volume(pair_addr):
 
 
 def calculate_yield(trading_vol: float, tvl: float):
-    fees = trading_vol * 0.0025
+    fees = trading_vol * 0.0025  # SushiSwap LPs receive 0.25% of fees (0.005% is distributed to SUSHI Holders)
     yield_percent = fees / tvl
     yield_percent = yield_percent * 100
     return yield_percent

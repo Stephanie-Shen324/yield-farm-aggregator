@@ -43,7 +43,6 @@ class MongoServer(pymongo.MongoClient):
         else:
             if float(pool.get_tvl()) == float(doc_to_update["tvl"]) and float(pool.get_apy()) == float(
                     doc_to_update["apy"]) and pool.get_impermanent_loss() == doc_to_update["il"]:
-
                 self.__log_file.write("{}: No updates for {}\n".format(datetime.now(), pool_dict["pool"]))
 
                 return 0
@@ -66,3 +65,36 @@ class MongoServer(pymongo.MongoClient):
 
     def write_log(self, text: str):
         self.__log_file.write(text + "\n")
+
+
+# db = pymongo.MongoClient("mongodb+srv://admin:admin@yieldfarmingdata.cclc0.mongodb.net/YieldFarmingData?retryWrites"
+#                          "=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE")
+# print(db.list_database_names())
+# col = db.pool_db.pools
+# f = open("sushiswap.pools", "r")
+# for line in f:
+#     split = line.split()
+#     pool = split[1]
+#     assets = split[0].split("/")
+#     pool_dict = {"assets": assets,
+#                  "protocol": "Sushi",
+#                  "pool": pool,
+#                  "tvl": [0.0],
+#                  "dailyTradingVol": [0.0],
+#                  "hrlyTradingVol": [0.0],
+#                  "DPY": [0.0],
+#                  "HPY": [0.0],
+#                  "APY": [0.0],
+#                  "rewardToken": {"name": "",
+#                                  "marketCap": 0.0,
+#                                  "spread": 0.0,
+#                                  "depth": [-1.0, 1.0]},
+#                  "il": 0.0,
+#                  "rating": 0.0,
+#                  "days": [0],
+#                  "hours": [0]
+#                  }
+#
+#     result = col.update_one({"pool": pool}, {"$set": pool_dict})
+#     print(result.acknowledged)
+# f.close()

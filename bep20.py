@@ -1,5 +1,6 @@
 from web3 import Web3
 import json
+from json import JSONDecodeError
 import requests
 from gql import gql, Client
 from gql.transport.requests import RequestsHTTPTransport
@@ -10,13 +11,17 @@ w3 = Web3(Web3.HTTPProvider('https://bsc-dataseed.binance.org/'))
 
 # Load in ABI for BSC
 def load_abi(token_address):
-    url_eth = "https://api.bscscan.com/api"
-    contract_address = Web3.toChecksumAddress(token_address)
-    API_ENDPOINT = url_eth + "?module=contract&action=getabi&address=" + str(contract_address)
-    r = requests.get(url=API_ENDPOINT)
-    response = r.json()
-    print(response['result'])
-    abi = json.loads(response['result'])
+    try:
+        url_eth = "https://api.bscscan.com/api"
+        contract_address = Web3.toChecksumAddress(token_address)
+        API_ENDPOINT = url_eth + "?module=contract&action=getabi&address=" + str(contract_address)
+        API_ENDPOINT = API_ENDPOINT + "&apikey={}".format("ADB2N3KCZAPTJNQGXDGVV48DNAFWTJ39H1")
+        r = requests.get(url=API_ENDPOINT)
+        response = r.json()
+        abi = json.loads(response['result'])
+    except JSONDecodeError as e:
+        print(e)
+        return None
     return abi
 
 

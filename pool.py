@@ -11,7 +11,7 @@ class Pool:
     __impermanent_loss = None
 
     def __init__(self, assets: [str], protocol: str, sc_address: str, link: str, safety: float, apy: float, tvl: float,
-                 il, hr_vol, daily_vol):
+                 il):
         self.__assets = assets
         self.__protocol = protocol
         self.__sc_address = sc_address
@@ -20,8 +20,8 @@ class Pool:
         self.__apy = apy
         self.__tvl = tvl
         self.__impermanent_loss = il
-        self.__hr_trading_vol = hr_vol
-        self.__daily_trading_vol = daily_vol
+        # self.__hr_trading_vol = hr_vol
+        # self.__daily_trading_vol = daily_vol
 
     def get_assets(self):
         return self.__assets

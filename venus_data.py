@@ -27,16 +27,14 @@ def scrape_venus_pools():
         abi = load_abi(pool)
         contract_address = w3.toChecksumAddress(pool)
         contract = w3.eth.contract(address=contract_address, abi=abi)
-        for func in contract.all_functions():
-            print(func)
-        # get contract info
-        underlying_token = contract.functions.underlying().call()
+        if contract.functions.name().call() == "Venus BNB":
+            underlying_token = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+        else:
+            underlying_token = contract.functions.underlying().call()
         cash = contract.functions.getCash().call()
         total_supply = contract.functions.totalSupply().call()
-        total_borrows = contract.functions.totalBorrowsCurrent().call()
+        total_borrows = contract.functions.totalBorrows().call()
         decimals = contract.functions.decimals().call()
-        reserves = contract.functions.totalReserves().call()
-        rFM = contract.functions.reserveFactorMantissa().call()
 
         # convert data to asset values
         total_supply_vBTC = total_supply/10**decimals  # in vBTC
@@ -45,11 +43,11 @@ def scrape_venus_pools():
         exchange_rate = total_supply/(total_borrows + liquidity)
         # Get asset price from pancakeswap
         try:
-            asset_price = float(ps_API.tokens("0x7130d2A12B9BCbFAe4f2634d864A1Ee1Ce3Ead9c")['data']['price'])
+            asset_price = float(ps_API.tokens(underlying_token)['data']['price'])
         except requests.exceptions.HTTPError:
             data_log.write("{}: Cannot get asset price for {}".format(time.time(), underlying_token))
             continue
-
+        print("{}: ${}".format(contract.functions.name().call(), asset_price))
         # total value locked
         tvl = (total_supply/exchange_rate) * asset_price
 
@@ -57,14 +55,9 @@ def scrape_venus_pools():
         trading_vol = total_borrows * asset_price
 
         # yield
-        get_interest_rate(contract.functions.interestRateModel().call(), cash, total_borrows, reserves, rFM)
+        block_supply_rate = contract.functions.supplyRatePerBlock().call() / 10 ** 18
+        supply_rate = block_supply_rate * 10512000  # Average blocks per year as of 10/09/2021
+        supply_rate = supply_rate * 100  # convert to %
 
-        quit()
-
-def get_interest_rate(addr, cash, borrows, reserves, reserveFactorMantissa):
-    abi = load_abi(addr)
-    contract_address = w3.toChecksumAddress(addr)
-    contract = w3.eth.contract(address=contract_address, abi=abi)
-    print(contract.functions.getSupplyRate(cash, borrows, reserves, reserveFactorMantissa).call()/10**10)
 
 scrape_venus_pools()

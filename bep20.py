@@ -71,4 +71,4 @@ def get_price_in_bnb(token_symbol: str, quantity: float):
     print(token0_decimal)
 
 
-get_price_in_bnb("ETH", 1)
+# get_price_in_bnb("ETH", 1)

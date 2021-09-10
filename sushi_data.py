@@ -1,13 +1,9 @@
 from web3 import Web3
-import json
 from gql import gql, Client
 from gql.transport.requests import RequestsHTTPTransport
-from pool import Pool
 import time
 from datetime import datetime
 from mongo_server import MongoServer
-from farm_pool import FarmPool
-from erc20 import get_price_in_eth, get_erc20_decimal, get_erc20_contract_address, eth_to_usd
 
 # Initialise SushiSwap graphQL client
 sample_transport = RequestsHTTPTransport(
@@ -37,11 +33,6 @@ def scrape_sushi_pools():
         try:
             hr = int(time.time() / 3600) - 1
             day = int(time.time() / 86400) - 1
-            asset_list = pool["assets"]
-            token0 = get_erc20_contract_address(asset_list[0])
-            token1 = get_erc20_contract_address(asset_list[1])
-            if token0 is None or token1 is None:
-                continue
 
             total_value_locked = get_tvl(pool["pool"])
             if day not in pool["days"]:

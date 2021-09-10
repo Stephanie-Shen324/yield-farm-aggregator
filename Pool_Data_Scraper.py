@@ -1,7 +1,7 @@
 # Imports
 import pandas as pd
 from pool import Pool
-
+from IL_calculator import IL_calc
 
 # Grab data from our sheet and read it into a Pandas dataframe
 
@@ -24,6 +24,9 @@ def scrape_data() -> [Pool]:
     pools = []
     size = df.shape[0]
     x = 0
+
+
+
     while x < size:
         row = df.iloc[x]
         protocol = str(row["Asset"]).strip().split("(")[0].strip()
@@ -36,15 +39,16 @@ def scrape_data() -> [Pool]:
 
         # add basic IL functionality
         '''
-        If no. of assets == 1:
-            IL risk = None
-        Else if all of the assets are stablecoin:
-            IL risk = None
-        Else if any of the assets are a stablecoin:
-            IL risk = Medium
-        Otherwise:
-            IL risk = high
-        '''
+        #Three level IL calculation method
+        # If no. of assets == 1:
+        #     IL risk = None
+        # Else if all of the assets are stablecoin:
+        #     IL risk = None
+        # Else if any of the assets are a stablecoin:
+        #     IL risk = Medium
+        # Otherwise:
+        #     IL risk = high
+        
         stable_coins = ['1GOLD', 'ALCX', 'ALUSD', 'BUSD', 'BITCHY', 'BITUSD', 'BITGOLD', 'BITEUR', 'BVND', 'BGBP',
                         'CUSD', 'CONST', 'CEUR', 'DAI', 'DGD', 'DGX', 'DPT', 'EURS', 'EURT', 'EOSDT', 'EBASE',
                         'FEI', 'FRAX', 'FLUSD', 'GUSD', 'HGT', 'HUSD', 'ITL', 'IDRT', 'KBC', 'LUSD', 'MUSD', 'MTR',
@@ -67,7 +71,15 @@ def scrape_data() -> [Pool]:
         else:  # Asset number bigger than 1, no assets are stablecoins
             IL_flag = 'High'
         # print(assets, IL_flag)
-        tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, IL_flag)
+        '''
+        #Jack's IL calculation
+        IL = IL_calc(assets)
+        print(assets)
+        print(IL)
+        tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, IL)
         pools.append(tmp_pool)
         x += 1
     return pools
+
+# print(scrape_data())
+  

@@ -74,8 +74,8 @@ def scrape_data() -> [Pool]:
         '''
         #Jack's IL calculation
         IL = IL_calc(assets)
-        print(assets)
-        print(IL)
+#         print(assets)
+#         print(IL)
         tmp_pool = Pool(assets, protocol, None, None, None, apy, tvl, IL)
         pools.append(tmp_pool)
         x += 1

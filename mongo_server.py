@@ -28,7 +28,26 @@ class MongoServer(pymongo.MongoClient):
             return -1
         return 0
 
-    def update_pool(self, pool: Pool) -> int:
+    def update_pool(self, pool):
+        col = self.pool_db.pools
+        try:
+            doc_to_update = col.find_one({'pool': pool['pool']})
+            if doc_to_update is None:
+                self.__log_file.write(
+                    "{}: {} does not exist. Try insert using insert_pools function.\n".format(datetime.now(),
+                                                                                              pool['pool']))
+                return 1
+            col.update_one(doc_to_update, {"$set": pool.to_dict()})
+            self.__log_file.write("{}: {} is successfully updated.\n".format(datetime.now(),
+                                                                             pool['pool']))
+            return 0
+        except Exception as e:
+            self.__log_file.write("{}: updating {} threw error...\n".format(datetime.now(), pool['pool']))
+            self.__log_file.write(e)
+            self.__log_file.write("\n")
+            return 1
+
+    def update_pool_redundant(self, pool: Pool) -> int:
         col = self.pool_db.pools_test
         # search db for this document
         pool_dict = pool.to_dict()

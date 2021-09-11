@@ -32,7 +32,7 @@ def main():
                     if response != 0:
                         raise MongoDBException(
                             "Error pushing data: pool: {} ({}) could not be updated or inserted".format(
-                                pool.get_protocol(), pool.get_assets()))
+                                pool['protocol'], pool['assets']))
             attempts = 0
         except Exception as e:
             attempts += 1

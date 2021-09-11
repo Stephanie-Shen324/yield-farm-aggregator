@@ -39,7 +39,7 @@ class MongoServer(pymongo.MongoClient):
                     "{}: {} does not exist. Try insert using insert_pools function.\n".format(datetime.now(),
                                                                                               pool['pool']))
                 return 1
-            col.update_one(doc_to_update, {"$set": pool.to_dict()})
+            col.update_one(doc_to_update, {"$set": pool})
             print("pool updated")
             self.__log_file.write("{}: {} is successfully updated.\n".format(datetime.now(),
                                                                              pool['pool']))

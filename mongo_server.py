@@ -69,15 +69,15 @@ class MongoServer(pymongo.MongoClient):
 
 # db = pymongo.MongoClient("mongodb+srv://admin:admin@yieldfarmingdata.cclc0.mongodb.net/YieldFarmingData?retryWrites"
 #                          "=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE")
-# print(db.list_database_names())
+#
 # col = db.pool_db.pools
-# f = open("sushiswap.pools", "r")
+# f = open("venus.pools", "r")
 # for line in f:
 #     split = line.split()
 #     pool = split[1]
 #     assets = split[0].split("/")
 #     pool_dict = {"assets": assets,
-#                  "protocol": "Sushi",
+#                  "protocol": "Venus",
 #                  "pool": pool,
 #                  "tvl": [0.0],
 #                  "dailyTradingVol": [0.0],
@@ -94,7 +94,7 @@ class MongoServer(pymongo.MongoClient):
 #                  "days": [0],
 #                  "hours": [0]
 #                  }
-#
-#     result = col.update_one({"pool": pool}, {"$set": pool_dict})
+#     print(pool_dict)
+#     result = col.insert_one(pool_dict)
 #     print(result.acknowledged)
 # f.close()

@@ -61,7 +61,6 @@ def scrape_venus_pools():
             except requests.exceptions.HTTPError:
                 data_log.write("{}: Cannot get asset price for {}".format(time.time(), underlying_token))
                 continue
-            print("{}: ${}".format(contract.functions.name().call(), asset_price))
             # total value locked
             tvl = (total_supply/exchange_rate) * asset_price
 
@@ -90,6 +89,3 @@ def scrape_venus_pools():
             continue
 
     return pools
-
-
-scrape_venus_pools()

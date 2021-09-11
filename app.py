@@ -24,6 +24,7 @@ def main():
 
             print("{} number of pools with data to update".format(len(pools)))
             for pool in pools:
+                print("updating: {} {}".format(pool['protocol'], pool['assets']))
                 response = db_client.update_pool(pool)
                 if response != 0:
                     # response = db_client.insert_pool(pool)

@@ -31,6 +31,7 @@ class MongoServer(pymongo.MongoClient):
     def update_pool(self, pool):
         col = self.pool_db.pools
         try:
+            print("finding {} in db".format(pool['pool']))
             doc_to_update = col.find_one({'pool': pool['pool']})
             if doc_to_update is None:
                 print("doc_to_update is none")
@@ -45,7 +46,7 @@ class MongoServer(pymongo.MongoClient):
             return 0
         except Exception as e:
             self.__log_file.write("{}: updating {} threw error...\n".format(datetime.now(), pool['pool']))
-            self.__log_file.write(e)
+            self.__log_file.write(str(e))
             self.__log_file.write("\n")
             return 1
 

@@ -33,6 +33,7 @@ data_log = open("venus_data.log", "a")
 
 def scrape_venus_pools():
     pools = []
+    start = datetime.now()
     for pool in venus_pools:
         try:
             hr = int(time.time() / 3600) - 1
@@ -82,10 +83,13 @@ def scrape_venus_pools():
                 pool['hrlyTradingVol'].append(trading_vol)
                 pool['HPY'].append(supply_rate/365*24)
                 pool['hours'].append(hr)
-            data_log.write("{}: retrieved data for {} {}".format(datetime.now(), pool['protocol'], pool['assets']))
+
             pools.append(pool)
         except Exception as e:
             data_log.write("{}: Exception thrown: {}\n".format(datetime.now(), e))
             continue
+    end = datetime.now()
+    duration = end - start
+    data_log.write("{}: grabbing data for Venus pools took {} seconds\n".format(datetime.now(), duration))
 
     return pools

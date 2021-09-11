@@ -82,7 +82,7 @@ def scrape_venus_pools():
                 pool['hrlyTradingVol'].append(trading_vol)
                 pool['HPY'].append(supply_rate/365*24)
                 pool['hours'].append(hr)
-
+            data_log.write("{}: retrieved data for {} {}".format(datetime.now(), pool['protocol'], pool['assets']))
             pools.append(pool)
         except Exception as e:
             data_log.write("{}: Exception thrown: {}\n".format(datetime.now(), e))

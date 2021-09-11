@@ -22,7 +22,7 @@ for p in col.find({"protocol": "Sushi"}):
 w3 = Web3(Web3.HTTPProvider('https://mainnet.infura.io/v3/68e4933ac39740e48b29a222aeba109e'))
 
 # Initialise log file
-data_log = open("data.log", "a")
+data_log = open("sushi_data.log", "a")
 
 
 def scrape_sushi_pools():

@@ -33,11 +33,13 @@ class MongoServer(pymongo.MongoClient):
         try:
             doc_to_update = col.find_one({'pool': pool['pool']})
             if doc_to_update is None:
+                print("doc_to_update is none")
                 self.__log_file.write(
                     "{}: {} does not exist. Try insert using insert_pools function.\n".format(datetime.now(),
                                                                                               pool['pool']))
                 return 1
             col.update_one(doc_to_update, {"$set": pool.to_dict()})
+            print("pool updated")
             self.__log_file.write("{}: {} is successfully updated.\n".format(datetime.now(),
                                                                              pool['pool']))
             return 0

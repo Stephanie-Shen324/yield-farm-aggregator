@@ -52,10 +52,10 @@ def scrape_venus_pools():
             decimals = contract.functions.decimals().call()
 
             # convert data to asset values
-            total_supply_vBTC = total_supply/10**decimals  # in vBTC
+            total_supply_v = total_supply/10**decimals  # in Venus token
             total_borrows_BTCB = total_borrows/10**18  ## in BTCB
             liquidity = cash/10**18  # in BTCB
-            exchange_rate = total_supply/(total_borrows + liquidity)
+            exchange_rate = total_supply_v/(total_borrows_BTCB + liquidity)
             # Get asset price from pancakeswap
             try:
                 asset_price = float(ps_API.tokens(underlying_token)['data']['price'])
@@ -63,10 +63,10 @@ def scrape_venus_pools():
                 data_log.write("{}: Cannot get asset price for {}".format(time.time(), underlying_token))
                 continue
             # total value locked
-            tvl = (total_supply/exchange_rate) * asset_price
+            tvl = (total_supply_v/exchange_rate) * asset_price
 
             # trading vol (In venus, trading vol is the amount borrowed at any time)
-            trading_vol = total_borrows * asset_price
+            trading_vol = total_borrows_BTCB * asset_price
 
             # yield
             block_supply_rate = contract.functions.supplyRatePerBlock().call() / 10 ** 18
@@ -83,7 +83,10 @@ def scrape_venus_pools():
                 pool['hrlyTradingVol'].append(trading_vol)
                 pool['HPY'].append(supply_rate/365*24)
                 pool['hours'].append(hr)
-
+            print(trading_vol)
+            print(tvl)
+            print(supply_rate)
+            print("-------------")
             pools.append(pool)
         except Exception as e:
             data_log.write("{}: Exception thrown: {}\n".format(datetime.now(), e))
@@ -93,3 +96,5 @@ def scrape_venus_pools():
     data_log.write("{}: grabbing data for Venus pools took {} seconds\n".format(datetime.now(), duration))
 
     return pools
+
+scrape_venus_pools()

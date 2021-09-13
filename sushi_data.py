@@ -49,6 +49,7 @@ def scrape_sushi_pools():
                 pool["DPY"].append(calculate_yield(daily_trading_vol, total_value_locked))
                 if len(pool["DPY"]) > 30:
                     pool["DPY"].pop(0)
+                pool["days"].append(day)
             if hr not in pool["hours"]:
                 # trading vol
                 hrly_trading_vol = get_pair_hr_volume(pool["pool"])
@@ -59,6 +60,7 @@ def scrape_sushi_pools():
                 pool["HPY"].append(calculate_yield(hrly_trading_vol, total_value_locked))
                 if len(pool["HPY"]) > 169:
                     pool["HPY"].pop(0)
+                pool["hours"].append(hr)
 
             daily_avg = 0
             for y in pool["DPY"]:
@@ -69,9 +71,6 @@ def scrape_sushi_pools():
             pool["APY"].append(apy)
             if len(pool["APY"]) > 30:
                 pool["APY"].pop(0)
-
-            pool["days"].append(day)
-            pool["hours"].append(hr)
 
             pools.append(pool)
         except Exception as e:

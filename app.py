@@ -12,7 +12,7 @@ def main():
     attempts = 0
     while True:
         try:
-            wait_time = 30
+            wait_time = 3600
             print(wait_time - time() % wait_time)
             sleep(wait_time - time() % wait_time)
             # do work

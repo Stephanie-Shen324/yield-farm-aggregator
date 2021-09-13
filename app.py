@@ -1,4 +1,5 @@
 from time import time, sleep
+from datetime import datetime
 from Pool_Data_Scraper import scrape_data
 from pool import Pool
 from sushi_data import scrape_sushi_pools
@@ -9,6 +10,7 @@ from mongodb_error import MongoDBException
 
 def main():
     db_client = MongoServer()
+    db_client.write_log("Connected: {}\n".format(datetime.now()))
     attempts = 0
     while True:
         try:

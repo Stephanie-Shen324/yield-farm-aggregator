@@ -72,6 +72,64 @@ def scrape_data() -> [Pool]:
             IL_flag = 'High'
         # print(assets, IL_flag)
         '''
+    ###     
+       # List of our hand selected pools
+    selected_data = [
+       ['Sushi (SUSHI)',['WBTC','WETH']],
+       ['Venus (XVS)',['BTC']],
+       ['Venus (XVS)',['ETH']],
+       ['Aave (AAVE)',['AAVE','WETH']], 
+       ['Venus (XVS)',['BNB']],
+       ['Sushi (SUSHI)',['DAI','WETH']],
+       ['Sushi (SUSHI)',['SUSHI','WETH']],
+       ['Venus (XVS)',['USDT']],
+       ['Sushi (SUSHI)',['WETH','USDT']],
+       ['Venus (XVS)',['BUSD']],
+       ['Auto (AUTO)',['CAKE']],
+       ['Venus (XVS)',['USDC']],
+       ['Auto (AUTO)',['BTCB']],
+       ['Sushi (SUSHI)',['YFI','WETH']],
+       ['Auto (AUTO)',['WBNB']],
+       ['Auto (AUTO)',['ETH']],
+       ['Venus (XVS)',['DOT']],
+       ['Kyber Network Crystal (KNC)',['USDC','USDT']],
+       ['Kyber Network Crystal (KNC)',['WBTC','WETH']],
+       ['Kyber Network Crystal (KNC)',['WETH','USDT']],
+       ['Auto (AUTO)',['WBNB','AUTO']],
+       ['Venus (XVS)',['XRP']],
+       ['Auto (AUTO)',['WBNB','BTCB']],
+       ['Auto (AUTO)',['WBNB','CAKE']],
+       ['Auto (AUTO)',['WBNB','BUSD']],
+       ['Auto (AUTO)',['USDT']],
+       ['Auto (AUTO)',['BUSD']],
+       ['Kyber Network Crystal (KNC)',['WBTC','USDT']],
+       ['Venus (XVS)',['DAI']],
+       ['Venus (XVS)',['BCH']],
+       ['Auto (AUTO)',['ETH','BETH']],
+       ['Venus (XVS)',['LINK']],
+       ['Kyber Network Crystal (KNC)',['WETH','KNC']],
+       ['Rally (RLY)',['WETH','RLY']],
+       ['Auto (AUTO)',['WBNB','ETH']],
+       ['Auto (AUTO)',['DOT']],
+       ['Harvest Finance (FARM)',['WETH','USDT']],
+       ['Mirror Protocol (MIR)',['MUSO','UST']],
+       ['Tokenlon (LON)',['LON','WETH']],
+       ['Sushi (SUSHI)',['WETH','CRV']]
+    ] 
+
+    # Grabs the indices at which the full list of pools match our hand selection
+    indices = []
+    for index, row in df.iterrows():
+      for i in range(len(selected_data)):
+          if selected_data[i][0] == row.Asset and selected_data[i][1] == row.Collateral:
+            indices.append(index)
+
+    # Only include our selected pools, currently is not exclusive of similar pools
+    df = df.loc[indices]
+    df = df.reset_index(drop = True)
+
+    ###
+
         #Jack's IL calculation
         IL = IL_calc(assets)
 #         print(assets)
